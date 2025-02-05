@@ -1,0 +1,16 @@
+services:
+  frontend-practice:
+    container_name: frontend-practice
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    external: true
