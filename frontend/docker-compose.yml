@@ -1,6 +1,7 @@
 services:
   frontend-practice:
     container_name: frontend-practice
+    image: "saniultushar/frontend:latest"
     build:
       context: .
     ports:
