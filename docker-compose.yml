@@ -1,0 +1,77 @@
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway/vendor/laravel/sail/runtimes/8.4
+      args:
+        WWWGROUP: 1000
+    container_name: api-gateway-practice-root
+    ports:
+      - "8000:8000"
+    networks:
+      - microservices-network
+    environment:
+      - APP_URL=http://localhost
+      - APP_PORT=8000
+    volumes:
+      - ./api-gateway:/var/www/html
+    working_dir: /var/www/html # Ensures artisan runs in the right directory
+
+    command:
+      [
+        "sail",
+        "/var/www/html/artisan",
+        "serve",
+        "--host=0.0.0.0",
+        "--port=8000",
+      ]
+
+  auth-service:
+    build:
+      context: ./auth-service/vendor/laravel/sail/runtimes/8.4
+      args:
+        WWWGROUP: 1000
+    container_name: auth-service-practice-root
+    ports:
+      - "8001:8000"
+    networks:
+      - microservices-network
+    environment:
+      - APP_URL=http://localhost
+      - APP_PORT=8001
+    depends_on:
+      - auth-service-db
+    volumes:
+      - ./auth-service:/var/www/html
+
+  auth-service-db:
+    image: mysql:8
+    container_name: auth-service-practice-root-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auth_service
+      MYSQL_USER: sail
+      MYSQL_PASSWORD: password
+    networks:
+      - microservices-network
+    volumes:
+      - auth-service-db-data:/var/lib/mysql
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend-practice-root
+    ports:
+      - "3000:3000"
+    networks:
+      - microservices-network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Prevents overwriting node_modules in the container
+    # command: "npm run dev"
+
+networks:
+  microservices-network:
+    driver: bridge
+
+volumes:
+  auth-service-db-data:
