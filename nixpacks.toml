@@ -1,11 +1,11 @@
-[[services]]
+[[providers]]
 name = "frontend"
 path = "./frontend"
 
-[[services]]
+[[providers]]
 name = "api-gateway"
 path = "./api-gateway"
 
-[[services]]
+[[providers]]
 name = "auth-service"
 path = "./auth-service"
