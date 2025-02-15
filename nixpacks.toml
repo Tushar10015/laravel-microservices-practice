@@ -1,0 +1,11 @@
+[[services]]
+name = "frontend"
+path = "./frontend"
+
+[[services]]
+name = "api-gateway"
+path = "./api-gateway"
+
+[[services]]
+name = "auth-service"
+path = "./auth-service"
