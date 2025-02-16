@@ -12,6 +12,7 @@ COPY . .
 
 # Install Composer dependencies
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer update --no-dev
 RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions
